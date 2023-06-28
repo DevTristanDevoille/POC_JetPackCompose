@@ -25,6 +25,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -44,53 +46,49 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val fontFamily = FontFamily(
-            Font(R.font.lexend_thin, FontWeight.Thin),
-            Font(R.font.lexend_light, FontWeight.Light),
-            Font(R.font.lexend_bold, FontWeight.Bold),
-            Font(R.font.lexend_extrabold, FontWeight.ExtraBold),
-            Font(R.font.lexend_semibold, FontWeight.SemiBold),
-            Font(R.font.lexend_medium, FontWeight.Medium),
-            Font(R.font.lexend_extralight, FontWeight.ExtraLight)
-        )
-
         setContent {
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .background(Color(0xFF101010)))
-            Text(
-                text = buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(
-                            color = Color.Green,
-                            fontSize = 50.sp
-                        )
-                    ){
-                        append("J")
-                    }
-                    append("etpack ")
-                    withStyle(
-                        style = SpanStyle(
-                            color = Color.Green,
-                            fontSize = 50.sp
-                        )
-                    ){
-                        append("C")
-                    }
-                    append("ompose")
-                },
-                color = Color.White,
-                fontSize = 30.sp,
-                fontFamily = fontFamily,
-                fontWeight = FontWeight.Bold,
-                fontStyle = FontStyle.Italic,
-                textAlign = TextAlign.Center,
-                textDecoration = TextDecoration.Underline
-            )
+            Column(Modifier.fillMaxSize()) {
+                val color = remember {
+                    mutableStateOf(Color.Yellow)
+                }
+                ColorBox(
+                    Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                ){
+                    color.value = it
+                }
+                Box(modifier = Modifier
+                    .background(color.value)
+                    .weight(1f)
+                    .fillMaxSize())
+            }
         }
     }
+}
+
+
+@Composable
+fun ColorBox(
+    modifier: Modifier = Modifier,
+    updateColor: (Color) -> Unit){
+
+    Box(modifier = modifier
+        .background(Color.Red)
+        .clickable {
+            updateColor(
+                Color(
+                    Random.nextFloat(),
+                    Random.nextFloat(),
+                    Random.nextFloat(),
+                    1f
+                )
+            )
+        }
+    )
 }
