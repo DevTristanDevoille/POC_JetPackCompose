@@ -66,7 +66,8 @@ class MainActivity : ComponentActivity() {
                 Box(modifier = Modifier
                     .background(color.value)
                     .weight(1f)
-                    .fillMaxSize())
+                    .fillMaxSize()
+                )
             }
         }
     }
